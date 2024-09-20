@@ -13,9 +13,11 @@ user_table = user_db["user_info"]
 def index():
     return render_template("home.html")
 
+
 @app.route('/registration')
 def registration():
     return render_template("registration.html")
+
 
 @app.route('/login')
 def login():
