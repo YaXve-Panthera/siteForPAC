@@ -5,7 +5,41 @@
     <title>Registration</title>
 </head>
 <body>
-    <a href="/home">Home</a>
-    <a>Registration</a>
+    <form method="POST">
+		<table>
+			<tr>
+				<td>
+					<label> Username: </label>
+				</td>
+				<td>
+					<input type="text" name="uid" placeholder="Enter a Username"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label> Email: </label>
+				</td>
+				<td>
+					<input type="email" name="email" placeholder="Enter a Email"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label> Password: </label>
+				</td>
+				<td>
+					<input type="password" name="password" placeholder="Enter a Password"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button type="submit"> Register </button>
+				</td>
+			</tr>
+		</table>
+	</form>
+	Already have an account? <a href="/login">Login</a>
+	<br/>
+	<a href="/home"> Home </a>
 </body>
 </html>
