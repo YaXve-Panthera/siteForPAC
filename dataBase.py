@@ -69,3 +69,15 @@ class DataBase:
 
     def getChatById(self, chatid):
         return self.chatCollection.find_one({'id': chatid})
+
+    def listOfMessages(self, chatid):
+        m = []
+        for message in self.messagesCollection.find({'chatid': chatid}):
+            m.append(message)
+        return m
+
+    def addMessage(self, text, chatid, sender, time):
+        message = {'text': text, 'chatid': chatid, 'sender': sender, 'time': time, 'readers': []}
+        inserted = self.messagesCollection.insert_one(message)
+        id = str(inserted.inserted_id)
+        self.messagesCollection.update_one({'_id': ObjectId(id)}, {'$set': {'id': id}})

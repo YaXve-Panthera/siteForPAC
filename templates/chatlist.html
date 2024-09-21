@@ -5,6 +5,7 @@
     <title>List of yours chats</title>
 </head>
 <body>
+    <a href="{{url_for('profile')}}">To profile</a>
     <form action="" method="post" class="form-contact">
             {{ form.hidden_tag() }}
             {{ form.name.label() }} {{ form.name() }}

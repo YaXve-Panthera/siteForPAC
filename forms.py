@@ -20,3 +20,7 @@ class CreateChatForm(FlaskForm):
     name = StringField("Name: ")
     chooses = SelectField("Chooses")
     submit = SubmitField("Создать")
+
+class SendMessage(FlaskForm):
+    text = StringField("Text of message")
+    submit = SubmitField("Send")

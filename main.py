@@ -2,8 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from dataBase import DataBase
-from forms import LoginForm, RegistrationForm, CreateChatForm
+from forms import LoginForm, RegistrationForm, CreateChatForm, SendMessage
 from user import User
+from datetime import datetime
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -87,7 +88,7 @@ def profile():
     return render_template("profile.html")
 
 
-@app.route('/profilesettings',  methods=["POST", "GET"])
+@app.route('/profilesettings', methods=["POST", "GET"])
 @login_required
 def profilesettings():
     id = current_user.get_id()
@@ -113,6 +114,7 @@ def profilesettings():
                 return "wrong password"
     return render_template("profilesettings.html")
 
+
 @app.route('/chatlist', methods=["POST", "GET"])
 @login_required
 def chatlist():
@@ -132,12 +134,24 @@ def chatlist():
     print(chats)
     return render_template("chatlist.html", form=form, chats=chats)
 
+
 @app.route('/chat/<chatid>', methods=["POST", "GET"])
 @login_required
 def chat(chatid):
-    print(chatid)
+    print("we in chat " + chatid)
     chat = dBase.getChatById(chatid)
-    return render_template("chat.html", chat=chat)
+    if current_user.get_id() not in chat['users']:
+        return "Ты куда тебе нельзя"
+    messages = sorted(dBase.listOfMessages(chatid), key=lambda d: d['time'])
+    print(messages)
+    form = SendMessage()
+    if form.validate_on_submit():
+        print("sending message" + form.text.data)
+        res = dBase.addMessage(form.text.data, chatid, current_user.get_id(), datetime.now())
+        return render_template("chat.html", chat=chat, messages=sorted(dBase.listOfMessages(chatid),
+                                                                       key=lambda d: d['time']), form=form, db=dBase)
+    return render_template("chat.html", chat=chat, messages=messages, form=form, db=dBase)
+
 
 if __name__ == "__main__":
     app.secret_key = 'super secret key'

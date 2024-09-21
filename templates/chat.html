@@ -5,7 +5,19 @@
     <title>Chat</title>
 </head>
 <body>
-    {{ chat['name'] }}
 
+    <p><a href="{{ url_for('chatlist') }}">To chat list</a></p>
+
+    <p>{{ chat['name'] }}</p>
+
+    {% for message in messages %}
+    <li>{{ db.getNameById(message['sender']) }} {{ message['text'] }} "{{message['time']}}" </li>
+    {% endfor %}
+    <form action="" method="post" class="form-contact">
+        {{ form.hidden_tag() }}
+        {{ form.text.label() }} {{ form.text() }}
+        {{ form.submit() }}
+        <hr align=left width="300px">
+    </form>
 </body>
 </html>
