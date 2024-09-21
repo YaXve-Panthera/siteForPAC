@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of yours chats</title>
+</head>
+<body>
+    <form action="" method="post" class="form-contact">
+            {{ form.hidden_tag() }}
+            {{ form.name.label() }} {{ form.name() }}
+            {{ form.chooses.label() }} {{ form.chooses() }}
+            {{ form.submit() }}
+        <hr align=left width="300px">
+    </form>
+    <label>List of yours chats:</label>
+    <table>
+        {% for chat in chats: %}
+
+          <li>  <a href=" {{ url_for('chat', chatid=chat['id'])}} "> {{ chat['name'] }}</a>: {% for user in chat['users']: %} {{ user }} {% endfor %} </li>
+
+        {% endfor %}
+    </table>
+
+</body>
+</html>

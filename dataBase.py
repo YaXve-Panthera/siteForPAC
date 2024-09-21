@@ -1,4 +1,5 @@
 import pymongo
+from bson import ObjectId
 
 
 class DataBase:
@@ -7,11 +8,13 @@ class DataBase:
     def __init__(self, dbName):
         self.dataBase = self.db_client[dbName]
         self.userCollection = self.dataBase["users"]
+        self.chatCollection = self.dataBase["chats"]
+        self.messagesCollection = self.dataBase["messages"]
 
     def addUser(self, user):
         inserted = self.userCollection.insert_one(user)
         self.userCollection.update_one({'email': user['email']}, {'$set': {'id': str(inserted.inserted_id),
-                        'age': "", 'aboutUser': "", 'photo': ""}})
+                                                                           'age': "", 'aboutUser': "", 'photo': ""}})
 
     def checkUser(self, email):
         if self.userCollection.find_one({'email': email}) is None:
@@ -41,3 +44,28 @@ class DataBase:
     def updatePassword(self, id, newpassword):
         self.userCollection.update_one({'id': str(id)}, {'$set': {'password': newpassword}})
         print("password is updated")
+
+    def listOfUsers(self):
+        l = []
+        for user in self.userCollection.find():
+            l.append((user['id'], user['name']))
+        return l
+
+    def getNameById(self, id):
+        return self.userCollection.find_one({'id': id})['name']
+
+    def addChat(self, name, users):
+        chat = {'name': name, 'users': users}
+        inserted = self.chatCollection.insert_one(chat)
+        id = str(inserted.inserted_id)
+        self.chatCollection.update_one({'_id': ObjectId(id)}, {'$set': {'id': id}})
+
+    def listOfUserChat(self, userid):
+        chats = []
+        for chat in self.chatCollection.find({'users': {'$in': [userid]}}):
+            chats.append(chat)
+            print(chat['id'])
+        return chats
+
+    def getChatById(self, chatid):
+        return self.chatCollection.find_one({'id': chatid})

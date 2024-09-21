@@ -5,47 +5,15 @@
     <title>Registration</title>
 </head>
 <body>
-    <form method="POST">
-		<table>
-			<tr>
-				<td>
-					<label> Username: </label>
-				</td>
-				<td>
-					<input type="text" name="name" placeholder="Enter a Username"/>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label> Email: </label>
-				</td>
-				<td>
-					<input type="email" name="email" placeholder="Enter a Email"/>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label> Password: </label>
-				</td>
-				<td>
-					<input type="password" name="password" placeholder="Enter a Password"/>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label> Repeat password: </label>
-				</td>
-				<td>
-					<input type="password" name="repeatpassword" placeholder="Repeat a Password"/>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<button type="submit"> Register </button>
-				</td>
-			</tr>
-		</table>
-	</form>
+    <form action="" method="post" class="form-contact">
+            {{ form.hidden_tag() }}
+			{{ form.name.label() }} {{ form.name() }}
+            {{ form.email.label() }} {{ form.email() }}
+            {{ form.password.label() }} {{ form.password() }}
+            {{ form.repeatPassword.label() }} {{ form.repeatPassword() }}
+            {{ form.submit() }}
+        <hr align=left width="300px">
+    </form>
 	Already have an account? <a href="/login">Login</a>
 	<br/>
 	<a href="/home"> Home </a>

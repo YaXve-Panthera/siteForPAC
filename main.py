@@ -1,7 +1,8 @@
-from flask import Flask, template_rendered, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from dataBase import DataBase
+from forms import LoginForm, RegistrationForm, CreateChatForm
 from user import User
 
 app = Flask(__name__)
@@ -32,27 +33,35 @@ def load_user(user_id):
 
 @app.route('/registration', methods=["POST", "GET"])
 def registration():
-    if request.method == "POST":
-        if request.form['password'] == request.form['repeatpassword']:
-            if dBase.checkUser(request.form['email']):
-                hash = generate_password_hash(request.form['password'])
-                res = dBase.addUser({'email': request.form['email'], 'password': hash, 'name': request.form['name']})
-                return "u success registered"
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
+
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        if form.password.data == form.repeatPassword.data:
+            if dBase.checkUser(form.email.data):
+                hash = generate_password_hash(form.password.data)
+                res = dBase.addUser({'email': form.email.data, 'password': hash, 'name': form.name.data})
+                return redirect(url_for("profile"))
             else:
                 return "user with this email already registered"
         else:
             return "passwords not equal"
-    return render_template("registration.html")
+    return render_template("registration.html", form=form)
 
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
-    if request.method == "POST":
-        print("try to login " + str(request.form['email']))
-        user = dBase.getUserByEmail(request.form['email'])
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        print("try to login " + str(form.email.data))
+        user = dBase.getUserByEmail(form.email.data)
         print("get user from bd" + str(user))
         if user is not None:
-            if check_password_hash(user['password'], request.form['password']):
+            if check_password_hash(user['password'], form.password.data):
                 print("password is correct")
                 userlogin = User().create(user)
                 print("created class user")
@@ -62,7 +71,7 @@ def login():
                 return "password incorrect"
         else:
             return "user not found"
-    return render_template("login.html")
+    return render_template("login.html", form=form)
 
 
 @app.route('/logout')
@@ -104,6 +113,31 @@ def profilesettings():
                 return "wrong password"
     return render_template("profilesettings.html")
 
+@app.route('/chatlist', methods=["POST", "GET"])
+@login_required
+def chatlist():
+    form = CreateChatForm()
+    form.chooses.choices = dBase.listOfUsers()
+    if form.validate_on_submit():
+        print("creating new chat")
+        if form.name.data == "" or form.name.data is None:
+            nm = dBase.getNameById(form.chooses.data)
+        else:
+            nm = form.name.data
+        users = [current_user.get_id(), form.chooses.data]
+        dBase.addChat(nm, users)
+
+    chats = dBase.listOfUserChat(current_user.get_id())
+
+    print(chats)
+    return render_template("chatlist.html", form=form, chats=chats)
+
+@app.route('/chat/<chatid>', methods=["POST", "GET"])
+@login_required
+def chat(chatid):
+    print(chatid)
+    chat = dBase.getChatById(chatid)
+    return render_template("chat.html", chat=chat)
 
 if __name__ == "__main__":
     app.secret_key = 'super secret key'
