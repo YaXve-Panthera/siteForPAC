@@ -36,7 +36,7 @@ def registration():
         if request.form['password'] == request.form['repeatpassword']:
             if dBase.checkUser(request.form['email']):
                 hash = generate_password_hash(request.form['password'])
-                res = dBase.addUser({'email' : request.form['email'], 'password': hash, 'name': request.form['name']})
+                res = dBase.addUser({'email': request.form['email'], 'password': hash, 'name': request.form['name']})
                 return "u success registered"
             else:
                 return "user with this email already registered"
@@ -77,8 +77,6 @@ def logout():
 def profile():
     return f"""<a href="{url_for('logout')}">Выйти из профиля</a>
                     user info: {current_user.get_id()}"""
-
-
 
 
 if __name__ == "__main__":

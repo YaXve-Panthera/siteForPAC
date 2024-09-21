@@ -1,10 +1,5 @@
-from dataclasses import dataclass, asdict
-
-import pymongo
-from bson import ObjectId
-from dacite import from_dict
+from dataclasses import dataclass
 from flask_login import UserMixin
-
 from dataBase import DataBase
 
 
@@ -26,5 +21,3 @@ class User(UserMixin):
 
     def get_id(self):
         return self.__user['id']
-
-
