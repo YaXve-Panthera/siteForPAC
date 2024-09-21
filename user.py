@@ -16,8 +16,22 @@ class User(UserMixin):
         return self
 
     def create(self, user):
+        user['age'] = ""
+        user['aboutUser'] = ""
         self.__user = user
         return self
 
     def get_id(self):
         return self.__user['id']
+
+    def get_name(self):
+        return self.__user['name']
+
+    def get_email(self):
+        return self.__user['email']
+
+    def get_age(self):
+        return self.__user['age']
+
+    def get_about(self):
+        return self.__user['aboutUser']

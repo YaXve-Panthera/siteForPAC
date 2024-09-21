@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+	  <a href="{{url_for('profile')}}">Выйти настроек профиля</a>
+	  <form action="profilesettings?f=prof" method="POST">
+      <table>
+			<tr>
+				<td>
+					<label> Username: </label>
+				</td>
+				<td>
+					<a>{{current_user.get_name()}}</a>
+                    <input type="text" name="name" value="{{current_user.get_name()}}" />
+				</td>
+			</tr>
+		  	<tr>
+				<td>
+					<label> Age: </label>
+				</td>
+				<td>
+					<a>{{current_user.get_age()}}</a>
+                    <input type="text" name="age" value="{{current_user.get_age()}}" />
+				</td>
+			</tr>
+		  	<tr>
+				<td>
+					<label> AboutUser: </label>
+				</td>
+				<td>
+					<a>{{current_user.get_about()}}</a>
+                    <input type="text" name="aboutUser" value="{{current_user.get_about()}}" />
+				</td>
+			</tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Потдвердить" />
+                </td>
+            </tr>
+	  </form>
+
+	  <form action="profilesettings?f=pass" method="POST">
+		  <table>
+			  <tr>
+				  <td>Old password</td>
+				  <td><input type="password" name="oldpassword" placeholder="old password" /></td>
+			  </tr>
+			  <tr>
+				  <td>New password</td>
+				  <td><input type="password" name="newpassword" placeholder="new password" /></td>
+			  </tr>
+			  <tr>
+				  <td>Repeat new password</td>
+				  <td><input type="password" name="repeatpassword" placeholder="repeat password" /></td>
+			  </tr>
+			  <tr>
+				  <td><input type="submit" value="Потдвердить" /></td>
+			  </tr>
+		  </table>
+	  </form>
+
+	  </table>
+</body>
+</html>

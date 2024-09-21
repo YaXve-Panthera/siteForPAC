@@ -6,7 +6,7 @@ from user import User
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-dBase = None
+dBase = DataBase("siteBase")
 login_manager = LoginManager(app)
 login_manager.login_view = '/login'
 
@@ -75,8 +75,34 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    return f"""<a href="{url_for('logout')}">Выйти из профиля</a>
-                    user info: {current_user.get_id()}"""
+    return render_template("profile.html")
+
+
+@app.route('/profilesettings',  methods=["POST", "GET"])
+@login_required
+def profilesettings():
+    id = current_user.get_id()
+    if request.method == "POST":
+        if request.args.get("f") == "prof":
+            print("updated profile")
+            print(id)
+            print(current_user)
+            res = dBase.updateUser(id, request.form['name'], request.form['age'],
+                                   request.form['aboutUser'])
+            return redirect(url_for("profile"))
+
+        if request.args.get("f") == "pass":
+            if check_password_hash(dBase.getHash(id), request.form['oldpassword']):
+                if request.form['newpassword'] == request.form['repeatpassword']:
+                    print("changing password")
+                    print(id)
+                    res = dBase.updatePassword(id, generate_password_hash(request.form['newpassword']))
+                    return redirect(url_for("profile"))
+                else:
+                    return "passwords no equal"
+            else:
+                return "wrong password"
+    return render_template("profilesettings.html")
 
 
 if __name__ == "__main__":

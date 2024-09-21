@@ -5,15 +5,45 @@
     <title>Profile</title>
 </head>
 <body>
+	  <a href="{{url_for('logout')}}">Выйти из профиля</a>
+
+	  <a href="{{url_for('profilesettings')}}">Настройки профиля</a>
       <table>
 			<tr>
 				<td>
 					<label> Username: </label>
 				</td>
 				<td>
-					<a>Profile</a>
+					<a>{{current_user.get_name()}}</a>
+
 				</td>
 			</tr>
-      </table>
+
+		  	<tr>
+				<td>
+					<label> Email: </label>
+				</td>
+				<td>
+					<a>{{current_user.get_email()}}</a>
+				</td>
+			</tr>
+
+		  	<tr>
+				<td>
+					<label> Age: </label>
+				</td>
+				<td>
+					<a>{{current_user.get_age()}}</a>
+				</td>
+			</tr>
+		  	<tr>
+				<td>
+					<label> AboutUser: </label>
+				</td>
+				<td>
+					<a>{{current_user.get_about()}}</a>
+				</td>
+			</tr>
+	  </table>
 </body>
 </html>
