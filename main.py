@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from dataBase import DataBase
-from forms import LoginForm, RegistrationForm, CreateChatForm, SendMessage
+from forms import LoginForm, RegistrationForm, CreateChatForm, SendMessage, UpdateProfile, ChangePassword
 from user import User
 from datetime import datetime
 
@@ -92,27 +92,30 @@ def profile():
 @login_required
 def profilesettings():
     id = current_user.get_id()
-    if request.method == "POST":
-        if request.args.get("f") == "prof":
-            print("updated profile")
-            print(id)
-            print(current_user)
-            res = dBase.updateUser(id, request.form['name'], request.form['age'],
-                                   request.form['aboutUser'])
-            return redirect(url_for("profile"))
 
-        if request.args.get("f") == "pass":
-            if check_password_hash(dBase.getHash(id), request.form['oldpassword']):
-                if request.form['newpassword'] == request.form['repeatpassword']:
-                    print("changing password")
-                    print(id)
-                    res = dBase.updatePassword(id, generate_password_hash(request.form['newpassword']))
-                    return redirect(url_for("profile"))
-                else:
-                    return "passwords no equal"
+    formUP = UpdateProfile()
+    formCP = ChangePassword()
+
+    if formUP.validate_on_submit():
+        print("updated profile")
+        print(id)
+        print(current_user)
+        res = dBase.updateUser(id, formUP.name.data, formUP.age.data,
+                                formUP.aboutUser.data)
+        return redirect(url_for("profile"))
+
+    if formCP.validate_on_submit():
+        if check_password_hash(dBase.getHash(id), formCP.oldpassword.data):
+            if formCP.newpassword.data == formCP.repeatpassword.data:
+                print("changing password")
+                print(id)
+                res = dBase.updatePassword(id, generate_password_hash(formCP.newpassword.data))
+                return redirect(url_for("profile"))
             else:
-                return "wrong password"
-    return render_template("profilesettings.html")
+                return "passwords no equal"
+        else:
+            return "wrong password"
+    return render_template("profilesettings.html", formCP=formCP, formUP=formUP)
 
 
 @app.route('/chatlist', methods=["POST", "GET"])

@@ -24,3 +24,15 @@ class CreateChatForm(FlaskForm):
 class SendMessage(FlaskForm):
     text = StringField("Text of message")
     submit = SubmitField("Send")
+
+class UpdateProfile(FlaskForm):
+    name = StringField("Name")
+    age = StringField("Age")
+    aboutUser = StringField("About you")
+    submit = SubmitField("Save changes")
+
+class ChangePassword(FlaskForm):
+    oldpassword = PasswordField("Old password: ", validators=[DataRequired()])
+    newpassword = PasswordField("New password: ", validators=[DataRequired()])
+    repeatpassword = PasswordField("Repeat password: ", validators=[DataRequired()])
+    submit = SubmitField("Submit")
