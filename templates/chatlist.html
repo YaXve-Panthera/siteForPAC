@@ -13,6 +13,13 @@
             {{ form.submit() }}
         <hr align=left width="300px">
     </form>
+    <form action="" method="post" class="form-contact">
+            {{ formG.hidden_tag() }}
+            {{ formG.name.label() }} {{ formG.name() }}
+            {{ formG.chooses.label() }} {{ formG.chooses() }}
+            {{ formG.submit() }}
+        <hr align=left width="300px">
+    </form>
     <label>List of yours chats:</label>
     <table>
         {% for chat in chats: %}

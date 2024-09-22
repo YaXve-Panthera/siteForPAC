@@ -1,8 +1,10 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_socketio import SocketIO, join_room, leave_room, send, emit
 from werkzeug.security import generate_password_hash, check_password_hash
 from dataBase import DataBase
-from forms import LoginForm, RegistrationForm, CreateChatForm, SendMessage, UpdateProfile, ChangePassword
+from forms import LoginForm, RegistrationForm, CreateChatForm, SendMessage, UpdateProfile, ChangePassword, \
+    CreateGroupChatForm
 from user import User
 from datetime import datetime
 
@@ -11,6 +13,7 @@ app.config.from_object(__name__)
 dBase = DataBase("siteBase")
 login_manager = LoginManager(app)
 login_manager.login_view = '/login'
+socketio = SocketIO(app)
 
 
 @app.before_request
@@ -123,6 +126,8 @@ def profilesettings():
 def chatlist():
     form = CreateChatForm()
     form.chooses.choices = dBase.listOfUsers()
+    formG = CreateGroupChatForm()
+    formG.chooses.choices = dBase.listOfUsers()
     if form.validate_on_submit():
         print("creating new chat")
         if form.name.data == "" or form.name.data is None:
@@ -132,10 +137,22 @@ def chatlist():
         users = [current_user.get_id(), form.chooses.data]
         dBase.addChat(nm, users)
 
+    if formG.validate_on_submit():
+        print("creating new group chat")
+        print(formG.data)
+        if formG.name.data == "" or formG.name.data is None:
+            for n in formG.chooses.data:
+                nm = nm + dBase.getNameById(n) + " "
+
+        else:
+            nm = formG.name.data
+        users = [current_user.get_id(), formG.chooses.data]
+        dBase.addChat(nm, users)
+
     chats = dBase.listOfUserChat(current_user.get_id())
 
     print(chats)
-    return render_template("chatlist.html", form=form, chats=chats)
+    return render_template("chatlist.html", form=form, formG=formG, chats=chats)
 
 
 @app.route('/chat/<chatid>', methods=["POST", "GET"])
@@ -147,15 +164,49 @@ def chat(chatid):
         return "Ты куда тебе нельзя"
     messages = sorted(dBase.listOfMessages(chatid), key=lambda d: d['time'])
     print(messages)
+    """
     form = SendMessage()
     if form.validate_on_submit():
         print("sending message" + form.text.data)
         res = dBase.addMessage(form.text.data, chatid, current_user.get_id(), datetime.now())
         return render_template("chat.html", chat=chat, messages=sorted(dBase.listOfMessages(chatid),
                                                                        key=lambda d: d['time']), form=form, db=dBase)
-    return render_template("chat.html", chat=chat, messages=messages, form=form, db=dBase)
+    """
+    return render_template("chat.html", chat=chat, messages=messages, db=dBase)
+
+
+# WebSocket events
+@socketio.on('join')
+@login_required
+def on_join(data):
+    room = data['room']
+    join_room(room)
+    #emit('message', {'msg': f'{current_user.get_name()} has entered the room.'}, room=room)
+
+
+@socketio.on('leave')
+@login_required
+def on_leave(data):
+    room = data['room']
+    leave_room(room)
+    #emit('message', {'msg': f'{current_user.get_name()} has left the room.'}, room=room)
+
+
+@socketio.on('send_message')
+@login_required
+def handle_send_message(data):
+    room = data['room']
+    message = data['message']
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    print("handle message" + str(room))
+    # Save message to the database
+    dBase.addMessage(message, room, current_user.get_id(), datetime.now())
+
+    # Broadcast the message to the room
+    emit('message', {'msg': f'{current_user.get_name()}: {message}', 'timestamp': timestamp}, room=room)
 
 
 if __name__ == "__main__":
     app.secret_key = 'super secret key'
-    app.run(debug=True)
+    socketio.run(app=app, debug=True, allow_unsafe_werkzeug=True)

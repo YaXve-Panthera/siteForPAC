@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, BooleanField, PasswordField, SelectField
+from wtforms import StringField, SubmitField, BooleanField, PasswordField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Email, Length
 
 
@@ -19,6 +19,11 @@ class RegistrationForm(FlaskForm):
 class CreateChatForm(FlaskForm):
     name = StringField("Name: ")
     chooses = SelectField("Chooses")
+    submit = SubmitField("Создать")
+
+class CreateGroupChatForm(FlaskForm):
+    name = StringField("Name: ")
+    chooses = SelectMultipleField("Chooses")
     submit = SubmitField("Создать")
 
 class SendMessage(FlaskForm):

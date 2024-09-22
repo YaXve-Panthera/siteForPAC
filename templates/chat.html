@@ -10,14 +10,49 @@
 
     <p>{{ chat['name'] }}</p>
 
-    {% for message in messages %}
-    <li>{{ db.getNameById(message['sender']) }} {{ message['text'] }} "{{message['time']}}" </li>
-    {% endfor %}
-    <form action="" method="post" class="form-contact">
-        {{ form.hidden_tag() }}
-        {{ form.text.label() }} {{ form.text() }}
-        {{ form.submit() }}
-        <hr align=left width="300px">
-    </form>
+    <div id="messages">
+        <!-- Предыдущие сообщения будут загружены сервером -->
+        {% for message in messages %}
+        <div>
+            <strong>{{ db.getNameById(message['sender']) }}</strong>: {{ message['text'] }} <small>{{message['time']}}</small>
+        </div>
+        {% endfor %}
+    </div>
+
+    <input id="messageInput" autocomplete="off" placeholder="Type a message" />
+    <button onclick="sendMessage()">Send</button>
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script type="text/javascript">
+        var socket = io();
+        var room = "{{ chat['id'] }}";
+
+        // Присоединение к комнате чата
+        socket.emit('join', {room: room});
+
+        // Получение новых сообщений
+        socket.on('message', function(data) {
+            var messagesDiv = document.getElementById('messages');
+            var newMessage = document.createElement('div');
+            newMessage.innerHTML = "<strong>" + data.msg.split(':')[0] + "</strong>: " + data.msg.split(':')[1]+ " <small>" + data.timestamp + "</small>";
+            messagesDiv.appendChild(newMessage);
+        });
+
+        // Отправка сообщения
+        function sendMessage() {
+            var input = document.getElementById('messageInput');
+            var message = input.value;
+            if (message) {
+                socket.emit('send_message', {room: room, message: message});
+                input.value = '';
+            }
+        }
+
+        // Выход из комнаты при закрытии окна
+        window.onbeforeunload = function() {
+            socket.emit('leave', {room: room});
+        };
+    </script>
+
 </body>
 </html>

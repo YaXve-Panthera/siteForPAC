@@ -78,6 +78,7 @@ class DataBase:
 
     def addMessage(self, text, chatid, sender, time):
         message = {'text': text, 'chatid': chatid, 'sender': sender, 'time': time, 'readers': []}
+        print("add message to db " + str(message))
         inserted = self.messagesCollection.insert_one(message)
         id = str(inserted.inserted_id)
         self.messagesCollection.update_one({'_id': ObjectId(id)}, {'$set': {'id': id}})
