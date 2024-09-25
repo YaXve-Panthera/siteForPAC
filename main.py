@@ -209,4 +209,4 @@ def handle_send_message(data):
 
 if __name__ == "__main__":
     app.secret_key = 'super secret key'
-    socketio.run(app=app, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app=app, debug=True, allow_unsafe_werkzeug=True, port=3000, host='0.0.0.0')
