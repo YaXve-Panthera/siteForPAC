@@ -3,16 +3,9 @@ from bson import ObjectId
 
 
 class DataBase:
-    # db_client = pymongo.MongoClient("mongodb://localhost:27017/")
+    db_client = pymongo.MongoClient("mongodb://localhost:27017/")
 
     uri = "mongodb+srv://clplaycom:q0AEWFo6KQICfQfE@cluster.qcj4r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster"
-    db_client = pymongo.MongoClient(uri)
-
-    try:
-        db_client.admin.command('ping')
-        print("Pinged your deployment. You successfully connected to MongoDB!")
-    except Exception as e:
-        print(e)
 
 
     def __init__(self, dbName):
