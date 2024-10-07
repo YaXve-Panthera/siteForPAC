@@ -3,11 +3,9 @@ from bson import ObjectId
 
 
 class DataBase:
-    uri = "mongodb+srv://clplaycom:q0AEWFo6KQICfQfE@cluster.qcj4r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster"
-    db_client = pymongo.MongoClient(uri)
+    db_client = pymongo.MongoClient("mongodb://localhost:27017/")
 
     uri = "mongodb+srv://clplaycom:q0AEWFo6KQICfQfE@cluster.qcj4r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster"
-
 
     def __init__(self, dbName):
         self.dataBase = self.db_client[dbName]
