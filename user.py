@@ -8,11 +8,12 @@ class User(UserMixin):
     db = DataBase("siteBase")
 
     def from_db(self, user_id):
-        print("request to DB")
-        print(user_id)
+        # print("request to DB")
+        # print(user_id)
         if user_id == "":
             return False
         self.__user = self.db.get_user(user_id)
+        print(f'[user] load user from database id:{user_id}')
         return self
 
     def create(self, user):
