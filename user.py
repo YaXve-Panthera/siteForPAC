@@ -12,7 +12,8 @@ class User(UserMixin):
         print(user_id)
         if user_id == "":
             return False
-        self.__user = self.db.getUser(user_id)
+        self.__user = self.db.get_user(user_id)
+        print(f'[user] load user from database id:{user_id}')
         return self
 
     def create(self, user):
