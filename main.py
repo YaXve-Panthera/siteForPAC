@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, flash, make_response, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, join_room, leave_room, emit
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,7 +10,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-dBase = DataBase("siteBase")
+dBase = DataBase()
 login_manager = LoginManager(app)
 login_manager.login_view = '/login'
 socketio = SocketIO(app)
@@ -20,8 +20,7 @@ socketio = SocketIO(app)
 def before_request():
     print("[main] init database")
     global dBase
-    dBase = DataBase("siteBase")
-
+    dBase = DataBase()
 
 @app.route('/')
 @app.route('/home')
@@ -47,7 +46,7 @@ def registration():
         if form.password.data == form.repeatPassword.data:
             if dBase.check_user(form.email.data):
                 hash_password = generate_password_hash(form.password.data)
-                res = dBase.add_user({'email': form.email.data, 'password': hash_password, 'name': form.name.data})
+                res = dBase.add_user(form.email.data, hash_password, form.name.data, form.surname.data)
                 print(f'[main] [registration] email:{form.email.data}, name:{form.name.data}')
                 return redirect(url_for("profile"))
             else:
@@ -70,25 +69,62 @@ def login():
     if form.validate_on_submit():
         # print("try to login " + str(form.email.data))
         user = dBase.get_user_by_email(form.email.data)
+        print(user)
         # print("get user from bd" + str(user))
         if user is not None:
-            if check_password_hash(user['password'], form.password.data):
+            if check_password_hash(user[2], form.password.data):
                 # print("password is correct")
                 userlogin = User().create(user)
                 # print("created class user")
+                print(user)
+                print(userlogin)
                 login_user(userlogin)
                 print(f'[main] [login] success! email:{form.email.data}')
                 print("[main] redirecting: profile")
                 return redirect("profile")
             else:
                 print(f'[main] [login] error: password incorrect | email:{form.email.data}')
-                return "password incorrect"
+                flash('Пароль неверный', category='error')
         else:
             print(f'[main] [login] error: user not found | email:{form.email.data}')
-            return "user not found"
+            flash('Пользователя с таким email нет', category='error')
     print("[main] page: login")
     return render_template("login.html", form=form)
 
+
+@app.route('/userava')
+@login_required
+def userava():
+    img = current_user.get_avatar(app)
+    if not img:
+        return ""
+
+    h = make_response(img)
+    h.headers['Content-Type'] = 'image/png'
+    return h
+
+
+@app.route('/upload', methods=["POST", "GET"])
+@login_required
+def upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and current_user.verifyExt(file.filename):
+            try:
+                img = file.read()
+                res = dBase.updateUserAvatar(img, current_user.get_id())
+                if not res:
+                    # flash("Ошибка обновления аватара", "error")
+                    return redirect(url_for('profile'))
+                # flash("Аватар обновлен", "success")
+            except FileNotFoundError as e:
+                print("error1")
+                # flash("Ошибка чтения файла", "error")
+        else:
+            print("error")
+            # flash("Ошибка обновления аватара", "error")
+
+    return redirect(url_for('profile'))
 
 @app.route('/logout')
 @login_required

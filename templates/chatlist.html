@@ -24,7 +24,7 @@
     <table>
         {% for chat in chats: %}
 
-          <li>  <a href=" {{ url_for('chat', chatid=chat['id'])}} "> {{ chat['name'] }}</a>: {% for user in chat['users']: %} {{ user }} {% endfor %} </li>
+          <li>  <a href=" {{ url_for('chat', chatid=chat['id'])}} "> {{ chat[1] }}</a>: {% for user in chat[2]: %} {{ user }} {% endfor %} </li>
 
         {% endfor %}
     </table>

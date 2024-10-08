@@ -1,0 +1,228 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.back {
+  width: 100%;
+  height: auto;
+  background-color: #2A1468;
+  background-repeat: no-repeat
+  background-size: cover;
+  position: absolute 
+}
+.window {
+  width: 392px;
+  height: 600px;
+  top: 18%;
+  left: 39%;
+  background: rgba(255,255,255,1);
+  padding: 10px 10px;
+  margin: auto;
+  opacity: 1;
+  position: absolute;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+.arrow {
+position: absolute;
+width: 25px;
+height: 29px;
+top: 49px;
+left: 30px;
+font-family: 'Montserrat';
+font-style: normal;
+font-size: 24px;
+line-height: 33px;
+text-align: center;
+text-decoration-line: underline;
+flex: none;
+order: 11;
+flex-grow: 0;
+
+}
+.rabbit{
+  position: absolute; 
+  left: 31%;   
+}
+.profile-create {
+  width: 204px;
+  color: rgba(0,0,0,1);
+  position: absolute;
+  top: 19%;
+  left: 26%;
+  font-weight: ExtraBold;
+  font-size: 24px;
+  opacity: 1;
+  text-align: center;
+
+}
+.mail-text {
+  width: 204px;
+  color: rgba(0,0,0,1);
+  position: absolute;
+  top: 166px;
+  left: 38px;
+  font-weight: Regular;
+  font-size: 16px;
+  opacity: 1;
+  text-align: center;
+  font-family: 'Montserrat';
+}    
+.fon_under_mail_text {
+  width: 302px;
+  height: 33px;
+  background: rgba(217,217,217,0.5400000214576721);
+  opacity: 1;
+  position: absolute;
+  top: 189px;
+  left: 53px;
+  border: 1px solid rgba(0,0,0,0.11999999731779099);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}  
+.name {
+  width: 36px;
+  color: rgba(0,0,0,1);
+  position: absolute;
+  top: 229px;
+  left: 60px;
+  font-weight: Regular;
+  font-size: 16px;
+  opacity: 1;
+  text-align: center;
+  font-family: 'Montserrat';
+}
+.fon_under_name {
+  width: 302px;
+  height: 33px;
+  background: rgba(217,217,217,0.5400000214576721);
+  opacity: 1;
+  position: absolute;
+  top: 252px;
+  left: 53px;
+  border: 1px solid rgba(0,0,0,0.11999999731779099);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.surname {
+  width: 76px;
+  color: rgba(0,0,0,1);
+  position: absolute;
+  top: 291px;
+  left: 60px;
+  font-weight: Regular;
+  font-size: 16px;
+  opacity: 1;
+  text-align: center;
+  font-family: 'Montserrat';
+}
+.fon_under_surname {
+  width: 302px;
+  height: 33px;
+  background: rgba(217,217,217,0.5400000214576721);
+  opacity: 1;
+  position: absolute;
+  top: 315px;
+  left: 53px;
+  border: 1px solid rgba(0,0,0,0.11999999731779099);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.pass-text {
+  width: 59px;
+  color: rgba(0,0,0,1);
+  position: absolute;
+  top: 354px;
+  left: 60px;
+  font-weight: Regular;
+  font-size: 16px;
+  opacity: 1;
+  text-align: center;
+  font-family: 'Montserrat'; 
+}
+.fon_under_pass_text {
+  width: 302px;
+  height: 33px;
+  background: rgba(217,217,217,0.5400000214576721);
+  opacity: 1;
+  position: absolute;
+  top: 378px;
+  left: 53px;
+  border: 1px solid rgba(0,0,0,0.11999999731779099);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;   
+}
+.pass-text-copy {
+  width: 155px;
+  color: rgba(0,0,0,1);
+  position: absolute;
+  top: 418px;
+  left: 60px;
+  font-weight: Regular;
+  font-size: 16px;
+  opacity: 1;
+  text-align: center;
+  font-family: 'Montserrat';  
+}
+.fon_under_pass_text_copy {
+  width: 302px;
+  height: 33px;
+  background: rgba(217,217,217,0.5400000214576721);
+  opacity: 1;
+  position: absolute;
+  top: 441px;
+  left: 53px;
+  border: 1px solid rgba(0,0,0,0.11999999731779099);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;   
+}
+.finish-create {
+  width: 215px;
+  color: rgba(255,255,255,1);
+  position: absolute;
+  top: 510px;
+  left: 100px;
+  font-weight: Regular;
+  font-size: 16px;
+  opacity: 1;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Montserrat';  
+}
+.button_finish_create {
+  width: 251px;
+  height: 40px;
+  background: rgba(76,26,170,1);
+  opacity: 1;
+  position: absolute;
+  top: 499px;
+  left: 81px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.enter-in-account {
+  width: 270px;
+  color: rgba(0,0,0,1);
+  position: absolute;
+  top: 554px;
+  left: 72px;
+  font-weight: Regular;
+  font-size: 16px;
+  opacity: 1;
+  text-align: center;
+  font-family: 'Montserrat';
+}
