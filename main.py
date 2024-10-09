@@ -214,7 +214,7 @@ def chatlist():
     chats = dBase.get_user_chat_list(current_user.get_id())
 
     print(f'[main] page: chat list of email:{current_user.get_email()}, chats: {chats}')
-    return render_template("chatlist.html", form=form, formG=form_g, chats=chats)
+    return render_template("chatlist.html", formG=form_g, chats=chats)
 
 
 @app.route('/chat/<chatid>', methods=["POST", "GET"])
