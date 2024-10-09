@@ -183,8 +183,8 @@ def profilesettings():
 @login_required
 def chatlist():
     nm = ""
-    form = CreateChatForm()
-    form.chooses.choices = dBase.get_list_of_users()
+    # form = CreateChatForm()
+    # form.chooses.choices = dBase.get_list_of_users()
     form_g = CreateGroupChatForm()
     form_g.chooses.choices = dBase.get_list_of_users()
     # if form.validate_on_submit():
