@@ -213,6 +213,17 @@ flex-grow: 0;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  width: 215px;
+  color: rgba(255,255,255,1);
+  position: absolute;
+  top: 510px;
+  left: 100px;
+  font-weight: Regular;
+  font-size: 16px;
+  opacity: 1;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Montserrat';
 }
 .enter-in-account {
   width: 270px;

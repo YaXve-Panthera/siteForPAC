@@ -16,7 +16,7 @@ class RegistrationForm(FlaskForm):
     email = StringField("Email: ", validators=[DataRequired()])
     password = PasswordField("Пароль: ", validators=[DataRequired()])
     repeatPassword = PasswordField("Пароль: ", validators=[DataRequired()])
-    submit = SubmitField("Зарегестрироваться")
+    submit = SubmitField("Завершить регистрацию")
 
 
 class CreateChatForm(FlaskForm):

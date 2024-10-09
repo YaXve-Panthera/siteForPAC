@@ -129,7 +129,7 @@ def upload():
 @app.route('/logout')
 @login_required
 def logout():
-    print(f'[main] logout email:{current_user.get_email()}')
+    # print(f'[main] logout email:{current_user.get_id()}')
     logout_user()
     print("[main] redirecting: login")
     return redirect(url_for('login'))
@@ -187,16 +187,16 @@ def chatlist():
     form.chooses.choices = dBase.get_list_of_users()
     form_g = CreateGroupChatForm()
     form_g.chooses.choices = dBase.get_list_of_users()
-    if form.validate_on_submit():
-        # print(f'[main] [chat] creating new chat | email:{current_user.get_email()}')
-        # print("creating new chat")
-        if form.name.data == "" or form.name.data is None:
-            nm = dBase.get_username_by_id(form.chooses.data)
-        else:
-            nm = form.name.data
-        users = [current_user.get_id(), form.chooses.data]
-        dBase.add_chat(nm, users)
-        print(f'[main] [chat] creating new chat | chat name:{nm}, users: {users}')
+    # if form.validate_on_submit():
+    #     # print(f'[main] [chat] creating new chat | email:{current_user.get_email()}')
+    #     # print("creating new chat")
+    #     if form.name.data == "" or form.name.data is None:
+    #         nm = dBase.get_username_by_id(form.chooses.data)
+    #     else:
+    #         nm = form.name.data
+    #     users = [current_user.get_id(), form.chooses.data]
+    #     dBase.add_chat(nm, users)
+    #     print(f'[main] [chat] creating new chat | chat name:{nm}, users: {users}')
 
     if form_g.validate_on_submit():
         print("creating new group chat")
@@ -222,10 +222,10 @@ def chatlist():
 def chat(chatid):
     # print("we in chat " + chatid)
     chat = dBase.get_chat_by_id(chatid)
-    if current_user.get_id() not in chat['users']:
+    if str(current_user.get_id()) not in chat[2]:
         print(f'[main] [chat] error: user not in chat {chatid}, email: {current_user.get_email()}')
         return "Ты куда тебе нельзя"
-    messages = sorted(dBase.get_list_of_messages(chatid), key=lambda d: d['time'])
+    messages = sorted(dBase.get_list_of_messages(chatid), key=lambda d: d[3])
     print(messages)
     """
     form = SendMessage()

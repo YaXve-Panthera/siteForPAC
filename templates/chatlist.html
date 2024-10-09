@@ -6,13 +6,13 @@
 </head>
 <body>
     <a href="{{url_for('profile')}}">To profile</a>
-    <form action="" method="post" class="form-contact">
-            {{ form.hidden_tag() }}
-            {{ form.name.label() }} {{ form.name() }}
-            {{ form.chooses.label() }} {{ form.chooses() }}
-            {{ form.submit() }}
-        <hr align=left width="300px">
-    </form>
+<!--    <form action="" method="post" class="form-contact">-->
+<!--            {{ form.hidden_tag() }}-->
+<!--            {{ form.name.label() }} {{ form.name() }}-->
+<!--            {{ form.chooses.label() }} {{ form.chooses() }}-->
+<!--            {{ form.submit() }}-->
+<!--        <hr align=left width="300px">-->
+<!--    </form>-->
     <form action="" method="post" class="form-contact">
             {{ formG.hidden_tag() }}
             {{ formG.name.label() }} {{ formG.name() }}
@@ -24,7 +24,7 @@
     <table>
         {% for chat in chats: %}
 
-          <li>  <a href=" {{ url_for('chat', chatid=chat['id'])}} "> {{ chat[1] }}</a>: {% for user in chat[2]: %} {{ user }} {% endfor %} </li>
+          <li>  <a href=" {{ url_for('chat', chatid=chat[0])}} "> {{ chat[1] }}</a>: {% for user in chat[2]: %} {{ user }} {% endfor %} </li>
 
         {% endfor %}
     </table>

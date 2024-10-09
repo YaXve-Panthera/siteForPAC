@@ -45,7 +45,8 @@ class DataBase:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 chatid INT NOT NULL,
                 sender VARCHAR(255) NOT NULL,
-                text TEXT NOT NULL)
+                text TEXT NOT NULL,
+                time TEXT)
         ''')
 
         self.connection.commit()
@@ -183,7 +184,7 @@ class DataBase:
         return chat
 
     def get_list_of_messages(self, chat_id):
-        self.cursor.execute('SELECT * FROM messages WHERE chat_id = ?', (chat_id,))
+        self.cursor.execute('SELECT * FROM messages WHERE chatid = ?', (chat_id,))
         messages = self.cursor.fetchall()
         print(f'[dataBase] get all messages of chat id:{chat_id}')
         return messages
@@ -197,7 +198,7 @@ class DataBase:
         # self.messagesCollection.update_one({'_id': ObjectId(id)}, {'$set': {'id': id}})
 
         self.cursor.execute('''
-            INSERT INTO messages (message, chat_id, sender, timestamp)
+            INSERT INTO messages (text, chatid, sender, time)
             VALUES (?, ?, ?, ?)
             ''', (text, chat_id, sender, timestamp))
         # message_id = self.cursor.lastrowid
