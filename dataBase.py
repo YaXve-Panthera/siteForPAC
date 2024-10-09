@@ -1,6 +1,4 @@
 import sqlite3
-import pymongo
-from bson import ObjectId
 
 
 class DataBase:
